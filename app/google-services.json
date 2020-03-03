@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "884839957909",
+    "firebase_url": "https://multistore-c2cda.firebaseio.com",
+    "project_id": "multistore-c2cda",
+    "storage_bucket": "multistore-c2cda.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:884839957909:android:2be9dd081f086daa80e29c",
+        "android_client_info": {
+          "package_name": "com.saahil.ssshopping"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "884839957909-m8h7454rd77ffgombh731unad3ull1e1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.saahil.ssshopping",
+            "certificate_hash": "8cf354399566d0c6fe6736d478be624e6484412e"
+          }
+        },
+        {
+          "client_id": "884839957909-d1sng6q5jlq4f1h2nct7k34m7cdta7hc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXx2C47ooBIoyditKFvvadTUDczm48NUQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "884839957909-d1sng6q5jlq4f1h2nct7k34m7cdta7hc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
