@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
                 btnLogin.setText("Login Admin");
                 tvAdminPanelLink.setVisibility(View.INVISIBLE);
                 tvNotAdminPanelLink.setVisibility(View.VISIBLE);
-                parentDbName="Admins";
+                parentDbName="Admin";
             }
         });
 
@@ -109,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Paper.book().write(Prevalent.userPasswordKey, password);
                             }
 
-                            if(parentDbName.equals("Admins")){
+                            if(parentDbName.equals("Admin")){
                                 Toast.makeText(LoginActivity.this, "Welcome Admin", Toast.LENGTH_SHORT).show();
                                 progressDialog.dismiss();
                                 Intent intent=new Intent(LoginActivity.this, AdminAddNewProductActivity.class);
