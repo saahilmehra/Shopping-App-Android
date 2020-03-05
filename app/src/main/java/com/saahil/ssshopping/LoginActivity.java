@@ -7,9 +7,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -20,8 +20,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.saahil.ssshopping.Model.Users;
 
+import io.paperdb.Paper;
+
 public class LoginActivity extends AppCompatActivity {
     EditText etContact, etPassword;
+    CheckBox cbRememberMe;
     Button btnLogin;
     ProgressDialog progressDialog;
     public String parentDbName="Users";
@@ -32,7 +35,10 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         etContact=findViewById(R.id.etContact);
         etPassword=findViewById(R.id.etPassword);
+        cbRememberMe=findViewById(R.id.cbRememberMe);
         btnLogin=findViewById(R.id.btnLogin);
+
+        Paper.init(this);
 
         progressDialog=new ProgressDialog(this);
 
@@ -69,10 +75,16 @@ public class LoginActivity extends AppCompatActivity {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 if(dataSnapshot.child(parentDbName).exists()){
                     Users userData=dataSnapshot.child(parentDbName).child(contact).getValue(Users.class);
                     if(userData.getContact().equals(contact)){
                         if(userData.getPassword().equals(password)){
+                            if(cbRememberMe.isChecked()){
+                                Paper.book().write(Prevalent.userContactKey, contact);
+                                Paper.book().write(Prevalent.userPasswordKey, password);
+                            }
+
                             Toast.makeText(LoginActivity.this, "Login Successfull!", Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();
                             Intent intent=new Intent(LoginActivity.this, HomeActivity.class);
