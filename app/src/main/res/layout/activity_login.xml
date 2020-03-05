@@ -103,5 +103,19 @@
         android:layout_marginLeft="80dp"
         android:layout_marginEnd="23dp"
         />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvNotAdminPanelLink"
+        android:text="I am not an Admin?"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/btnLogin"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginLeft="80dp"
+        android:layout_marginEnd="23dp"
+        android:visibility="invisible"
+        />
 
 </RelativeLayout>

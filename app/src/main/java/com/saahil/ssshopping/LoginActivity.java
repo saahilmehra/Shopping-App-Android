@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText etContact, etPassword;
     CheckBox cbRememberMe;
     Button btnLogin;
+    TextView tvNotAdminPanelLink, tvAdminPanelLink;
     ProgressDialog progressDialog;
     public String parentDbName="Users";
 
@@ -36,6 +38,8 @@ public class LoginActivity extends AppCompatActivity {
         etContact=findViewById(R.id.etContact);
         etPassword=findViewById(R.id.etPassword);
         cbRememberMe=findViewById(R.id.cbRememberMe);
+        tvAdminPanelLink=findViewById(R.id.tvAdminPanelLink);
+        tvNotAdminPanelLink=findViewById(R.id.tvNotAdminPanelLink);
         btnLogin=findViewById(R.id.btnLogin);
 
         Paper.init(this);
@@ -46,6 +50,26 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 loginUser();
+            }
+        });
+
+        tvAdminPanelLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnLogin.setText("Login Admin");
+                tvAdminPanelLink.setVisibility(View.INVISIBLE);
+                tvNotAdminPanelLink.setVisibility(View.VISIBLE);
+                parentDbName="Admins";
+            }
+        });
+
+        tvNotAdminPanelLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnLogin.setText("Login");
+                tvNotAdminPanelLink.setVisibility(View.INVISIBLE);
+                tvAdminPanelLink.setVisibility(View.VISIBLE);
+                parentDbName="Users";
             }
         });
     }
@@ -85,10 +109,18 @@ public class LoginActivity extends AppCompatActivity {
                                 Paper.book().write(Prevalent.userPasswordKey, password);
                             }
 
-                            Toast.makeText(LoginActivity.this, "Login Successfull!", Toast.LENGTH_SHORT).show();
-                            progressDialog.dismiss();
-                            Intent intent=new Intent(LoginActivity.this, HomeActivity.class);
-                            startActivity(intent);
+                            if(parentDbName.equals("Admins")){
+                                Toast.makeText(LoginActivity.this, "Welcome Admin", Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
+                                Intent intent=new Intent(LoginActivity.this, AdminAddNewProductActivity.class);
+                                startActivity(intent);
+                            }
+                            else if(parentDbName.equals("Users")){
+                                Toast.makeText(LoginActivity.this, "Login Successfull!", Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
+                                Intent intent=new Intent(LoginActivity.this, HomeActivity.class);
+                                startActivity(intent);
+                            }
                         }
                         else{
                             progressDialog.dismiss();

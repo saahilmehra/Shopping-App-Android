@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
                     Users userData=dataSnapshot.child(parentDbName).child(userContactKey).getValue(Users.class);
                     if(userData.getContact().equals(userContactKey)){
                         if(userData.getPassword().equals(userPasswordKey)){
-
                             Toast.makeText(MainActivity.this, "Login Successfull!", Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();
                             Intent intent=new Intent(MainActivity.this, HomeActivity.class);
