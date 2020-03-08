@@ -101,35 +101,40 @@ public class LoginActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 if(dataSnapshot.child(parentDbName).exists()){
-                    Users userData=dataSnapshot.child(parentDbName).child(contact).getValue(Users.class);
-                    if(userData.getContact().equals(contact)){
-                        if(userData.getPassword().equals(password)){
-                            if(cbRememberMe.isChecked()){
-                                Paper.book().write(Prevalent.userContactKey, contact);
-                                Paper.book().write(Prevalent.userPasswordKey, password);
-                            }
+                    if(dataSnapshot.child(parentDbName).child(contact).exists()) {
+                        Users userData = dataSnapshot.child(parentDbName).child(contact).getValue(Users.class);
+                        if (userData.getContact().equals(contact)) {
+                            if (userData.getPassword().equals(password)) {
+                                if (cbRememberMe.isChecked()) {
+                                    Paper.book().write(Prevalent.userContactKey, contact);
+                                    Paper.book().write(Prevalent.userPasswordKey, password);
+                                    Paper.book().write(Prevalent.userTypeKey, parentDbName);
+                                }
 
-                            if(parentDbName.equals("Admin")){
-                                Toast.makeText(LoginActivity.this, "Welcome Admin", Toast.LENGTH_SHORT).show();
+                                if (parentDbName.equals("Admin")) {
+                                    Toast.makeText(LoginActivity.this, "Welcome Admin", Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
+                                    Intent intent = new Intent(LoginActivity.this, AdminCategoryActivity.class);
+                                    startActivity(intent);
+                                } else if (parentDbName.equals("Users")) {
+                                    Toast.makeText(LoginActivity.this, "Login Successfull!", Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
+                                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                    startActivity(intent);
+                                }
+                            } else {
                                 progressDialog.dismiss();
-                                Intent intent=new Intent(LoginActivity.this, AdminCategoryActivity.class);
-                                startActivity(intent);
-                            }
-                            else if(parentDbName.equals("Users")){
-                                Toast.makeText(LoginActivity.this, "Login Successfull!", Toast.LENGTH_SHORT).show();
-                                progressDialog.dismiss();
-                                Intent intent=new Intent(LoginActivity.this, HomeActivity.class);
-                                startActivity(intent);
+                                Toast.makeText(LoginActivity.this, "Password Incorrect!", Toast.LENGTH_SHORT).show();
                             }
                         }
-                        else{
+                        else {
                             progressDialog.dismiss();
-                            Toast.makeText(LoginActivity.this, "Password Incorrect!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Account with this " + contact + " number does not exists!!", Toast.LENGTH_SHORT).show();
                         }
                     }
-                    else{
+                    else {
                         progressDialog.dismiss();
-                        Toast.makeText(LoginActivity.this, "Account with this "+contact+" number does not exists!!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Account with this " + contact + " number does not exists!!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

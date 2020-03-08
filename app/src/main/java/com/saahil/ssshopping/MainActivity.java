@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
         String userContactKey=Paper.book().read(Prevalent.userContactKey);
         String userPasswordKey=Paper.book().read(Prevalent.userPasswordKey);
+        parentDbName=Paper.book().read(Prevalent.userTypeKey);
         if(userContactKey!="" && userPasswordKey!=""){
             if(!TextUtils.isEmpty(userContactKey) && !TextUtils.isEmpty(userPasswordKey)){
                 allowAccess(userContactKey, userPasswordKey);
@@ -71,24 +72,36 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 if(dataSnapshot.child(parentDbName).exists()){
-                    Users userData=dataSnapshot.child(parentDbName).child(userContactKey).getValue(Users.class);
-                    if(userData.getContact().equals(userContactKey)){
-                        if(userData.getPassword().equals(userPasswordKey)){
-                            Toast.makeText(MainActivity.this, "Login Successfull!", Toast.LENGTH_SHORT).show();
-                            progressDialog.dismiss();
-                            Intent intent=new Intent(MainActivity.this, HomeActivity.class);
-                            startActivity(intent);
+                    if(dataSnapshot.child(parentDbName).child(userContactKey).exists()) {
+                        Users userData = dataSnapshot.child(parentDbName).child(userContactKey).getValue(Users.class);
+                        if (userData.getContact().equals(userContactKey)) {
+                            if (userData.getPassword().equals(userPasswordKey)) {
+                                if (parentDbName.equals("Admin")) {
+                                    Toast.makeText(MainActivity.this, "Welcome Admin", Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
+                                    Intent intent = new Intent(MainActivity.this, AdminCategoryActivity.class);
+                                    startActivity(intent);
+                                } else if (parentDbName.equals("Users")) {
+                                    Toast.makeText(MainActivity.this, "Login Successfull!", Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
+                                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                                    startActivity(intent);
+                                }
+                            } else {
+                                progressDialog.dismiss();
+                                Paper.book().destroy();
+                                Toast.makeText(MainActivity.this, "Password Incorrect!", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        else{
+                        else {
                             progressDialog.dismiss();
                             Paper.book().destroy();
-                            Toast.makeText(MainActivity.this, "Password Incorrect!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Account with this " + userContactKey + " number does not exists!!", Toast.LENGTH_SHORT).show();
                         }
                     }
-                    else{
+                    else {
                         progressDialog.dismiss();
-                        Paper.book().destroy();
-                        Toast.makeText(MainActivity.this, "Account with this "+userContactKey+" number does not exists!!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Account with this " + userContactKey + " number does not exists!!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
