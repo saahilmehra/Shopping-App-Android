@@ -1,28 +1,28 @@
 package com.saahil.ssshopping.Model;
 
 public class Products {
-    private String name, price, description, image, category, id, date, timme;
+    private String pname, price, description, image_url, category, id, date, time;
     public Products(){
 
     }
 
-    public Products(String name, String price, String description, String image, String category, String id, String date, String timme) {
-        this.name = name;
+    public Products(String pname, String price, String description, String image_url, String category, String id, String date, String time) {
+        this.pname = pname;
         this.price = price;
         this.description = description;
-        this.image = image;
+        this.image_url = image_url;
         this.category = category;
         this.id = id;
         this.date = date;
-        this.timme = timme;
+        this.time = time;
     }
 
-    public String getName() {
-        return name;
+    public String getPname() {
+        return pname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPname(String pname) {
+        this.pname = pname;
     }
 
     public String getPrice() {
@@ -41,12 +41,12 @@ public class Products {
         this.description = description;
     }
 
-    public String getImage() {
-        return image;
+    public String getImage_url() {
+        return image_url;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
     }
 
     public String getCategory() {
@@ -73,11 +73,11 @@ public class Products {
         this.date = date;
     }
 
-    public String getTimme() {
-        return timme;
+    public String getTime() {
+        return time;
     }
 
-    public void setTimme(String timme) {
-        this.timme = timme;
+    public void setTime(String time) {
+        this.time = time;
     }
 }
