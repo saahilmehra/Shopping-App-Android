@@ -1,15 +1,17 @@
 package com.saahil.ssshopping.Model;
 
 public class Users {
-    public String name, contact, password;
+    public String name, contact, password, image, address;
 
     public Users() {
     }
 
-    public Users(String name, String contact, String password) {
+    public Users(String name, String contact, String password, String image, String address) {
         this.name = name;
         this.contact = contact;
         this.password = password;
+        this.image = image;
+        this.address = address;
     }
 
     public String getName() {
@@ -34,5 +36,21 @@ public class Users {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

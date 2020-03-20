@@ -7,6 +7,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -14,8 +16,11 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.saahil.ssshopping.Model.Products;
 import com.saahil.ssshopping.ViewHolder.ProductViewHolder;
 import com.squareup.picasso.Picasso;
@@ -37,6 +42,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     private DatabaseReference productReference;
+    TextView tvUsername;
+    ImageView ivProfileImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +73,37 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         NavigationView navigationView=findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View headerView=navigationView.getHeaderView(0);
+        tvUsername=headerView.findViewById(R.id.tvUsername);
+        ivProfileImage=headerView.findViewById(R.id.ivProfileImage);
+
+        setUsernameImage();
+    }
+
+    private void setUsernameImage() {
+        DatabaseReference userReference=FirebaseDatabase.getInstance().getReference().child("Users").child(Prevalent.currentOnlineUser.getContact());
+        userReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    String name=dataSnapshot.child("name").getValue().toString();
+
+                    if(dataSnapshot.child("image").exists()){
+                        String imageUrl=dataSnapshot.child("image").getValue().toString();
+                        Picasso.get().load(imageUrl).placeholder(R.drawable.profile).into(ivProfileImage);
+                    }
+
+                    tvUsername.setText(name);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     @Override
@@ -124,7 +162,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(this, "Categories", Toast.LENGTH_SHORT).show();
         }
         else if(id==R.id.navSettings){
-            Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+            Intent intent=new Intent(HomeActivity.this, SettingsActivity.class);
+            startActivity(intent);
         }
         else if(id==R.id.navLogout){
             Paper.book().destroy();
