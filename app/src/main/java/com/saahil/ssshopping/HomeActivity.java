@@ -2,6 +2,7 @@ package com.saahil.ssshopping;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,14 +59,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
         drawer = findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -112,12 +106,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         FirebaseRecyclerOptions<Products> options=new FirebaseRecyclerOptions.Builder<Products>().setQuery(productReference, Products.class).build();
         FirebaseRecyclerAdapter<Products, ProductViewHolder> adapter=new FirebaseRecyclerAdapter<Products, ProductViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull Products model) {
+            protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull final Products model) {
                 holder.tvName.setText(model.getPname());
                 holder.tvPrice.setText(model.getPrice());
                 holder.tvDescription.setText(model.getDescription());
 
                 Picasso.get().load(model.getImage_url()).into(holder.ivImage);
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent=new Intent(HomeActivity.this, ProductDetailsActivity.class);
+                        intent.putExtra("pid", model.getPid());
+                        startActivity(intent);
+                    }
+                });
             }
 
             @NonNull

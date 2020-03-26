@@ -1,18 +1,18 @@
 package com.saahil.ssshopping.Model;
 
 public class Products {
-    private String pname, price, description, image_url, category, id, date, time;
+    private String pname, price, description, image_url, category, pid, date, time;
     public Products(){
 
     }
 
-    public Products(String pname, String price, String description, String image_url, String category, String id, String date, String time) {
+    public Products(String pname, String price, String description, String image_url, String category, String pid, String date, String time) {
         this.pname = pname;
         this.price = price;
         this.description = description;
         this.image_url = image_url;
         this.category = category;
-        this.id = id;
+        this.pid = pid;
         this.date = date;
         this.time = time;
     }
@@ -57,12 +57,12 @@ public class Products {
         this.category = category;
     }
 
-    public String getId() {
-        return id;
+    public String getPid() {
+        return pid;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setPid(String pid) {
+        this.pid = pid;
     }
 
     public String getDate() {
