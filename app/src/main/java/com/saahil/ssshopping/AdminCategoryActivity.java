@@ -5,17 +5,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+
+import io.paperdb.Paper;
 
 public class AdminCategoryActivity extends AppCompatActivity {
     ImageView ivTshirts, ivSportsTshirts, ivFemaleDresses, ivSweathers;
     ImageView ivGlasses, ivPurses, ivHats, ivShoes;
     ImageView ivHeadphones, ivLaptops, ivWatches, ivSmartPhones;
+    Button btnChecknewOrders, btnlogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_category);
+
+        Paper.init(this);
 
         ivTshirts=findViewById(R.id.ivTshirts);
         ivSportsTshirts=findViewById(R.id.ivSportsTshirts);
@@ -31,6 +37,27 @@ public class AdminCategoryActivity extends AppCompatActivity {
         ivLaptops=findViewById(R.id.ivLaptops);
         ivWatches=findViewById(R.id.ivWatches);
         ivSmartPhones=findViewById(R.id.ivSmartPhones);
+
+        btnChecknewOrders=findViewById(R.id.btnCheckNewOrders);
+        btnlogout=findViewById(R.id.btnLogout);
+
+        btnChecknewOrders.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(AdminCategoryActivity.this, AdminNewOrdersActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnlogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Paper.book().destroy();
+                Intent intent=new Intent(AdminCategoryActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
 
         ivTshirts.setOnClickListener(new View.OnClickListener() {
             @Override
