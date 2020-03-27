@@ -20,8 +20,11 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.saahil.ssshopping.Model.Cart;
 import com.saahil.ssshopping.ViewHolder.CartViewHolder;
 
@@ -29,7 +32,7 @@ public class CartActivity extends AppCompatActivity {
     RecyclerView rvCart;
     RecyclerView.LayoutManager layoutManager;
     Button btnNext;
-    TextView tvTotalPrice;
+    TextView tvTotalPrice, tvMssg;
     int totalPrice=0;
 
     @Override
@@ -44,6 +47,7 @@ public class CartActivity extends AppCompatActivity {
 
         btnNext=findViewById(R.id.btnNext);
         tvTotalPrice=findViewById(R.id.tvTotalPrice);
+        tvMssg=findViewById(R.id.tvMssg);
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +64,8 @@ public class CartActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        checkForOrderStatus();
 
         final DatabaseReference cartReference= FirebaseDatabase.getInstance().getReference().child("Cart");
         FirebaseRecyclerOptions<Cart> options=new FirebaseRecyclerOptions.Builder<Cart>()
@@ -129,5 +135,40 @@ public class CartActivity extends AppCompatActivity {
         rvCart.setAdapter(adapter);
         adapter.startListening();
         tvTotalPrice.setText("Total Price ="+totalPrice);
+    }
+
+    private void checkForOrderStatus(){
+        DatabaseReference orderReference=FirebaseDatabase.getInstance().getReference()
+                .child("Orders")
+                .child(Prevalent.currentOnlineUser.getContact());
+
+        orderReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    String status=dataSnapshot.child("status").getValue().toString();
+                    String name=dataSnapshot.child("name").getValue().toString();
+
+                    if(status.equals("shipped")){
+                        tvTotalPrice.setText("Dear "+name+"\n order is shipped successfully, you can purchase more products once your existing product is delivered.");
+                        rvCart.setVisibility(View.GONE);
+                        tvMssg.setVisibility(View.VISIBLE);
+                        tvMssg.setText("Congratulations, your order has been shipped and you will recieve it on your door soon.");
+                        btnNext.setVisibility(View.GONE);
+                    }
+                    else if(status.equals("Not Shipped")){
+                        tvTotalPrice.setText("shipping state = Not shipped yet");
+                        rvCart.setVisibility(View.GONE);
+                        tvMssg.setVisibility(View.VISIBLE);
+                        btnNext.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

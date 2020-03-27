@@ -35,6 +35,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     Button btnAddToCart;
     DatabaseReference productReference;
     Products product;
+    String status="Normal";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +56,22 @@ public class ProductDetailsActivity extends AppCompatActivity {
         btnAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addToCart();
+                if(status.equals("Order Placed") || status.equals("order Shipped")){
+                    Toast.makeText(ProductDetailsActivity.this, "You can purchase more products once your previous order is delivered.", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    addToCart();
+                }
             }
         });
         
         getProductDetails(productId);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkOrderStatus();
     }
 
     private void addToCart() {
@@ -131,6 +143,32 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     tvPrice.setText(product.getPrice());
 
                     Picasso.get().load(product.getImage_url()).into(ivProductImage);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void checkOrderStatus(){
+        DatabaseReference orderReference=FirebaseDatabase.getInstance().getReference()
+                .child("Orders")
+                .child(Prevalent.currentOnlineUser.getContact());
+        orderReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    String orderStatus=dataSnapshot.child("status").getValue().toString();
+
+                    if(orderStatus.equals("shipped")){
+                        status="Order Shipped";
+                    }
+                    else if(orderStatus.equals("Not Shipped")){
+                        status="Order Placed";
+                    }
                 }
             }
 

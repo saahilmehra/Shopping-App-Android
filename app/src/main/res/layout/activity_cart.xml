@@ -34,6 +34,19 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <TextView
+        android:id="@+id/tvMssg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:textAlignment="center"
+        android:layout_centerVertical="true"
+        android:text="Congratulations, your final order has been placed. You will recieve confirmation soon."
+        android:textSize="20dp"
+        android:visibility="gone"/>
+
     <Button
         android:id="@+id/btnNext"
         android:layout_width="match_parent"
