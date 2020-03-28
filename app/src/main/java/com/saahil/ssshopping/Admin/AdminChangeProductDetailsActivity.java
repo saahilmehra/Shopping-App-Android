@@ -1,4 +1,4 @@
-package com.saahil.ssshopping;
+package com.saahil.ssshopping.Admin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,11 +18,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.saahil.ssshopping.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
-public class AdminCangeProductDetailsActivity extends AppCompatActivity {
+public class AdminChangeProductDetailsActivity extends AppCompatActivity {
     Button btnApplyChanges, btnDelete;
     EditText etName, etPrice, etDescription;
     ImageView ivImage;
@@ -32,7 +33,7 @@ public class AdminCangeProductDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_cange_product_details);
+        setContentView(R.layout.activity_admin_change_product_details);
 
         productId=getIntent().getStringExtra("pid");
 
@@ -66,9 +67,9 @@ public class AdminCangeProductDetailsActivity extends AppCompatActivity {
         productsReference.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Intent intent=new Intent(AdminCangeProductDetailsActivity.this, AdminCategoryActivity.class);
+                Intent intent=new Intent(AdminChangeProductDetailsActivity.this, AdminCategoryActivity.class);
                 startActivity(intent);
-                Toast.makeText(AdminCangeProductDetailsActivity.this, "Product deleted successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdminChangeProductDetailsActivity.this, "Product deleted successfully", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -107,8 +108,8 @@ public class AdminCangeProductDetailsActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(AdminCangeProductDetailsActivity.this, "Applied changes successfully", Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(AdminCangeProductDetailsActivity.this, AdminCategoryActivity.class);
+                    Toast.makeText(AdminChangeProductDetailsActivity.this, "Applied changes successfully", Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(AdminChangeProductDetailsActivity.this, AdminCategoryActivity.class);
                     startActivity(intent);
                 }
             }

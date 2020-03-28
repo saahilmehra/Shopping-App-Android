@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,6 +36,7 @@ public class SettingsActivity extends AppCompatActivity {
     ImageView ivProfileImage;
     EditText etContact, etAddress, etName;
     TextView tvCancel, tvUpdate, tvChangeProfileImage;
+    Button btnSecurityQuestion;
 
     StorageReference imageReference;
     StorageTask uploadTask;
@@ -66,6 +68,7 @@ public class SettingsActivity extends AppCompatActivity {
         tvCancel=findViewById(R.id.tvCancel);
         tvUpdate=findViewById(R.id.tvUpdate);
         tvChangeProfileImage=findViewById(R.id.tvChangeProfileImage);
+        btnSecurityQuestion=findViewById(R.id.btnSecurityQuestion);
 
         displayPreviousData();
 
@@ -87,6 +90,15 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 CropImage.activity(imageUri).setAspectRatio(1, 1).start(SettingsActivity.this);
+            }
+        });
+
+        btnSecurityQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(SettingsActivity.this, ForgotPasswordActivity.class);
+                intent.putExtra("check", "settings");
+                startActivity(intent);
             }
         });
     }

@@ -1,4 +1,4 @@
-package com.saahil.ssshopping;
+package com.saahil.ssshopping.Admin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +15,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.saahil.ssshopping.Model.Cart;
+import com.saahil.ssshopping.R;
 import com.saahil.ssshopping.ViewHolder.CartViewHolder;
 
 public class AdminOrderedProductsActivity extends AppCompatActivity {

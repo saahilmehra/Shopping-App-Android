@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.saahil.ssshopping.Admin.AdminCategoryActivity;
 import com.saahil.ssshopping.Model.Users;
 
 import io.paperdb.Paper;
@@ -27,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText etContact, etPassword;
     CheckBox cbRememberMe;
     Button btnLogin;
-    TextView tvNotAdminPanelLink, tvAdminPanelLink;
+    TextView tvNotAdminPanelLink, tvAdminPanelLink, tvForgotPassword;
     ProgressDialog progressDialog;
     public String parentDbName="Users";
 
@@ -35,12 +36,14 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         etContact=findViewById(R.id.etContact);
         etPassword=findViewById(R.id.etPassword);
         cbRememberMe=findViewById(R.id.cbRememberMe);
         tvAdminPanelLink=findViewById(R.id.tvAdminPanelLink);
         tvNotAdminPanelLink=findViewById(R.id.tvNotAdminPanelLink);
         btnLogin=findViewById(R.id.btnLogin);
+        tvForgotPassword=findViewById(R.id.tvForgetPassword);
 
         Paper.init(this);
 
@@ -70,6 +73,15 @@ public class LoginActivity extends AppCompatActivity {
                 tvNotAdminPanelLink.setVisibility(View.INVISIBLE);
                 tvAdminPanelLink.setVisibility(View.VISIBLE);
                 parentDbName="Users";
+            }
+        });
+
+        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+                intent.putExtra("check", "login");
+                startActivity(intent);
             }
         });
     }

@@ -1,4 +1,4 @@
-package com.saahil.ssshopping;
+package com.saahil.ssshopping.Admin;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import com.saahil.ssshopping.HomeActivity;
+import com.saahil.ssshopping.MainActivity;
+import com.saahil.ssshopping.R;
 
 import io.paperdb.Paper;
 

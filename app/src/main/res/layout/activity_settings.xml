@@ -98,4 +98,15 @@
         android:layout_margin="15dp"
         android:padding="10dp"/>
 
+    <Button
+        android:id="@+id/btnSecurityQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etAddress"
+        android:text="Set Security Questions"
+        android:layout_margin="15dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:padding="10dp"/>
+
 </RelativeLayout>
