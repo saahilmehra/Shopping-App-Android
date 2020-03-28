@@ -14,7 +14,7 @@ public class AdminCategoryActivity extends AppCompatActivity {
     ImageView ivTshirts, ivSportsTshirts, ivFemaleDresses, ivSweathers;
     ImageView ivGlasses, ivPurses, ivHats, ivShoes;
     ImageView ivHeadphones, ivLaptops, ivWatches, ivSmartPhones;
-    Button btnChecknewOrders, btnlogout;
+    Button btnChecknewOrders, btnlogout, btnEditProductDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,16 @@ public class AdminCategoryActivity extends AppCompatActivity {
 
         btnChecknewOrders=findViewById(R.id.btnCheckNewOrders);
         btnlogout=findViewById(R.id.btnLogout);
+        btnEditProductDetails=findViewById(R.id.btnEditProductDetails);
+
+        btnEditProductDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(AdminCategoryActivity.this, HomeActivity.class);
+                intent.putExtra("Admin", "Admin");
+                startActivity(intent);
+            }
+        });
 
         btnChecknewOrders.setOnClickListener(new View.OnClickListener() {
             @Override

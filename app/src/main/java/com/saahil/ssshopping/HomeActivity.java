@@ -46,11 +46,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     TextView tvUsername;
     ImageView ivProfileImage;
     FloatingActionButton fab;
+    String type="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        Intent intent=getIntent();
+        Bundle bundle=intent.getExtras();
+        if(bundle!=null){
+            type=getIntent().getExtras().get("Admin").toString();
+        }
 
         productReference= FirebaseDatabase.getInstance().getReference().child("Products");
         recyclerView=findViewById(R.id.rv);
@@ -82,7 +89,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         tvUsername=headerView.findViewById(R.id.tvUsername);
         ivProfileImage=headerView.findViewById(R.id.ivProfileImage);
 
-        setUsernameImage();
+        if(!type.equals("Admin")){
+            setUsernameImage();
+        }
     }
 
     private void setUsernameImage() {
@@ -126,9 +135,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent=new Intent(HomeActivity.this, ProductDetailsActivity.class);
-                        intent.putExtra("pid", model.getPid());
-                        startActivity(intent);
+                        if(type.equals("Admin")){
+                            Intent intent=new Intent(HomeActivity.this, AdminCangeProductDetailsActivity.class);
+                            intent.putExtra("pid", model.getPid());
+                            startActivity(intent);
+                        }
+                        else{
+                            Intent intent=new Intent(HomeActivity.this, ProductDetailsActivity.class);
+                            intent.putExtra("pid", model.getPid());
+                            startActivity(intent);
+                        }
                     }
                 });
             }
