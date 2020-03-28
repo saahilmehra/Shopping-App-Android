@@ -166,10 +166,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         int id=menuItem.getItemId();
 
         if(id==R.id.navCart){
-            Toast.makeText(this, "Cart", Toast.LENGTH_SHORT).show();
+            Intent intent=new Intent(HomeActivity.this, CartActivity.class);
+            startActivity(intent);
         }
-        else if(id==R.id.navOrders){
-            Toast.makeText(this, "Orders", Toast.LENGTH_SHORT).show();
+        else if(id==R.id.navSearch){
+            Intent intent=new Intent(HomeActivity.this, SearchProductsActivity.class);
+            startActivity(intent);
         }
         else if(id==R.id.navCategories){
             Toast.makeText(this, "Categories", Toast.LENGTH_SHORT).show();

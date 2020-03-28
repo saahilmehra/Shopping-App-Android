@@ -1,10 +1,12 @@
 package com.saahil.ssshopping;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -57,6 +59,32 @@ public class AdminNewOrdersActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        CharSequence options[]=new CharSequence[]
+                                {
+                                        "Yes",
+                                        "No"
+                                };
+                        AlertDialog.Builder builder=new AlertDialog.Builder(AdminNewOrdersActivity.this);
+                        builder.setTitle("Have the products been shipped?");
+                        builder.setItems(options, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                if(i==0){
+                                    String uid=getRef(position).getKey();
+                                    removeOrder(uid);
+                                }
+                                if(i==1){
+                                    finish();
+                                }
+                            }
+                        });
+                        builder.show();
+                    }
+                });
             }
 
             @NonNull
@@ -70,5 +98,9 @@ public class AdminNewOrdersActivity extends AppCompatActivity {
 
         rvOrders.setAdapter(adapter);
         adapter.startListening();
+    }
+
+    private void removeOrder(String uid) {
+        ordersReference.child(uid).removeValue();
     }
 }
