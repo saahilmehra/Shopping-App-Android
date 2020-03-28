@@ -23,7 +23,7 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 
 public class AdminCangeProductDetailsActivity extends AppCompatActivity {
-    Button btnApplyChanges;
+    Button btnApplyChanges, btnDelete;
     EditText etName, etPrice, etDescription;
     ImageView ivImage;
     String productId="";
@@ -43,6 +43,7 @@ public class AdminCangeProductDetailsActivity extends AppCompatActivity {
         etDescription=findViewById(R.id.etDescription);
         btnApplyChanges=findViewById(R.id.btnApplyChanges);
         ivImage=findViewById(R.id.ivImage);
+        btnDelete=findViewById(R.id.btnDelete);
 
         showPresentProductData();
 
@@ -50,6 +51,24 @@ public class AdminCangeProductDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 checkValidations();
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteProduct();
+            }
+        });
+    }
+
+    private void deleteProduct() {
+        productsReference.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Intent intent=new Intent(AdminCangeProductDetailsActivity.this, AdminCategoryActivity.class);
+                startActivity(intent);
+                Toast.makeText(AdminCangeProductDetailsActivity.this, "Product deleted successfully", Toast.LENGTH_SHORT).show();
             }
         });
     }

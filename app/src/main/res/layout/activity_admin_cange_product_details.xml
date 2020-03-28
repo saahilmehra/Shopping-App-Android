@@ -72,6 +72,20 @@
             android:padding="12dp"
             android:layout_margin="5dp" />
 
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnApplyChanges"
+            android:text="Delete this Product"
+            android:layout_marginTop="2dp"
+            android:textAlignment="center"
+            android:textSize="18dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/buttons"
+            android:padding="12dp"
+            android:layout_margin="5dp" />
+
     </RelativeLayout>
 
 
