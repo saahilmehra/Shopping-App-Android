@@ -1,4 +1,4 @@
-package com.saahil.ssshopping;
+package com.saahil.ssshopping.UserData;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +17,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.saahil.ssshopping.Admin.AdminCategoryActivity;
+import com.saahil.ssshopping.HomeActivity;
 import com.saahil.ssshopping.Model.Users;
+import com.saahil.ssshopping.Prevalent.Prevalent;
+import com.saahil.ssshopping.R;
 
 import io.paperdb.Paper;
 
@@ -39,8 +42,9 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(MainActivity.this,LoginActivity.class);
+                Intent i=new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(i);
+                finish();
             }
         });
         btnJoinNow.setOnClickListener(new View.OnClickListener() {
@@ -82,12 +86,14 @@ public class MainActivity extends AppCompatActivity {
                                     progressDialog.dismiss();
                                     Intent intent = new Intent(MainActivity.this, AdminCategoryActivity.class);
                                     startActivity(intent);
+                                    finish();
                                 } else if (parentDbName.equals("Users")) {
-                                    Toast.makeText(MainActivity.this, "Login Successfull!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainActivity.this, "Welcome "+userData.getName(), Toast.LENGTH_SHORT).show();
                                     progressDialog.dismiss();
                                     Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                                     Prevalent.currentOnlineUser=userData;
                                     startActivity(intent);
+                                    finish();
                                 }
                             } else {
                                 progressDialog.dismiss();
@@ -95,14 +101,10 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.makeText(MainActivity.this, "Password Incorrect!", Toast.LENGTH_SHORT).show();
                             }
                         }
-                        else {
-                            progressDialog.dismiss();
-                            Paper.book().destroy();
-                            Toast.makeText(MainActivity.this, "Account with this " + userContactKey + " number does not exists!!", Toast.LENGTH_SHORT).show();
-                        }
                     }
                     else {
                         progressDialog.dismiss();
+                        Paper.book().destroy();
                         Toast.makeText(MainActivity.this, "Account with this " + userContactKey + " number does not exists!!", Toast.LENGTH_SHORT).show();
                     }
                 }

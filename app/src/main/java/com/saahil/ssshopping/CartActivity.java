@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.saahil.ssshopping.Model.Cart;
+import com.saahil.ssshopping.Prevalent.Prevalent;
 import com.saahil.ssshopping.ViewHolder.CartViewHolder;
 
 public class CartActivity extends AppCompatActivity {
@@ -53,7 +54,7 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 tvTotalPrice.setText("Total Price ="+totalPrice);
-                Intent intent=new Intent(CartActivity.this, ConfirmfinalOrderActivity.class);
+                Intent intent=new Intent(CartActivity.this, ConfirmFinalOrderActivity.class);
                 intent.putExtra("Total Price", String.valueOf(totalPrice));
                 startActivity(intent);
                 finish();
@@ -79,10 +80,13 @@ public class CartActivity extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull CartViewHolder holder, int position, @NonNull final Cart model) {
                 holder.tvName.setText(model.getPname());
                 holder.tvQuantity.setText("Quantity= "+model.getQuantity());
-                holder.tvPrice.setText("Price= $"+model.getPrice());
+                holder.tvPrice.setText("Price = ₹"+model.getPrice());
 
                 int subTotal=(Integer.valueOf(model.getPrice()) * Integer.valueOf(model.getQuantity()));
                 totalPrice=totalPrice+subTotal;
+
+                holder.tvSubTotal.setText("Sub-Total = ₹"+subTotal);
+                tvTotalPrice.setText("Total Price = ₹"+totalPrice);
 
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -110,9 +114,20 @@ public class CartActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if(task.isSuccessful()){
-                                                        Toast.makeText(CartActivity.this, "Item removed successfully...", Toast.LENGTH_SHORT).show();
-                                                        Intent intent=new Intent(CartActivity.this, HomeActivity.class);
-                                                        startActivity(intent);
+                                                        cartReference.child("Admin View").child(Prevalent.currentOnlineUser.getContact())
+                                                                .child("Products")
+                                                                .child(model.getPid())
+                                                                .removeValue()
+                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if(task.isSuccessful()){
+                                                                            Toast.makeText(CartActivity.this, "Item removed successfully...", Toast.LENGTH_SHORT).show();
+                                                                            Intent intent=new Intent(CartActivity.this, HomeActivity.class);
+                                                                            startActivity(intent);
+                                                                        }
+                                                                    }
+                                                                });
                                                     }
                                                 }
                                             });
@@ -134,7 +149,6 @@ public class CartActivity extends AppCompatActivity {
         };
         rvCart.setAdapter(adapter);
         adapter.startListening();
-        tvTotalPrice.setText("Total Price ="+totalPrice);
     }
 
     private void checkForOrderStatus(){
@@ -164,7 +178,6 @@ public class CartActivity extends AppCompatActivity {
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 

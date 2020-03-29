@@ -12,24 +12,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ForgotPasswordActivity"></activity>
+        <activity android:name=".UserData.ForgotPasswordActivity"></activity>
         <activity android:name=".Admin.AdminChangeProductDetailsActivity" />
         <activity android:name=".SearchProductsActivity" />
         <activity android:name=".Admin.AdminOrderedProductsActivity" />
         <activity android:name=".Admin.AdminNewOrdersActivity" />
-        <activity android:name=".ConfirmfinalOrderActivity" />
+        <activity android:name=".ConfirmFinalOrderActivity" />
         <activity android:name=".CartActivity" />
         <activity android:name=".ProductDetailsActivity" />
-        <activity android:name=".SettingsActivity" />
+        <activity android:name=".UserData.SettingsActivity" />
         <activity
             android:name=".HomeActivity"
-            android:label="@string/title_activity_home"
+            android:label="SS Shopping"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Admin.AdminCategoryActivity" />
         <activity android:name=".Admin.AdminAddNewProductActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".UserData.RegisterActivity" />
+        <activity android:name=".UserData.LoginActivity" />
+        <activity android:name=".UserData.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

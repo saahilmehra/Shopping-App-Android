@@ -1,4 +1,4 @@
-package com.saahil.ssshopping;
+package com.saahil.ssshopping.UserData;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +20,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.saahil.ssshopping.Admin.AdminCategoryActivity;
+import com.saahil.ssshopping.HomeActivity;
 import com.saahil.ssshopping.Model.Users;
+import com.saahil.ssshopping.Prevalent.Prevalent;
+import com.saahil.ssshopping.R;
 
 import io.paperdb.Paper;
 
@@ -128,25 +131,24 @@ public class LoginActivity extends AppCompatActivity {
                                     progressDialog.dismiss();
                                     Intent intent = new Intent(LoginActivity.this, AdminCategoryActivity.class);
                                     startActivity(intent);
+                                    finish();
                                 } else if (parentDbName.equals("Users")) {
-                                    Toast.makeText(LoginActivity.this, "Login Successfull!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "Welcome "+userData.getName(), Toast.LENGTH_SHORT).show();
                                     progressDialog.dismiss();
                                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                     Prevalent.currentOnlineUser=userData;
                                     startActivity(intent);
+                                    finish();
                                 }
                             } else {
                                 progressDialog.dismiss();
                                 Toast.makeText(LoginActivity.this, "Password Incorrect!", Toast.LENGTH_SHORT).show();
                             }
                         }
-                        else {
-                            progressDialog.dismiss();
-                            Toast.makeText(LoginActivity.this, "Account with this " + contact + " number does not exists!!", Toast.LENGTH_SHORT).show();
-                        }
                     }
                     else {
                         progressDialog.dismiss();
+                        Paper.book().destroy();
                         Toast.makeText(LoginActivity.this, "Account with this " + contact + " number does not exists!!", Toast.LENGTH_SHORT).show();
                     }
                 }

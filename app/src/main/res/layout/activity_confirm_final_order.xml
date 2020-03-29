@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ConfirmfinalOrderActivity">
+    tools:context=".ConfirmFinalOrderActivity">
 
     <TextView
         android:id="@+id/tvText"
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="20dp"
-        android:text="Confirm"
+        android:text="Place Order"
         android:background="@color/colorPrimaryDark"
         android:textColor="@android:color/white"
         android:textSize="20dp"

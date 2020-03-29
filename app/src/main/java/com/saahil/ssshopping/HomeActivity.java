@@ -2,6 +2,7 @@ package com.saahil.ssshopping;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.saahil.ssshopping.Admin.AdminChangeProductDetailsActivity;
 import com.saahil.ssshopping.Model.Products;
+import com.saahil.ssshopping.Prevalent.Prevalent;
+import com.saahil.ssshopping.UserData.MainActivity;
+import com.saahil.ssshopping.UserData.SettingsActivity;
 import com.saahil.ssshopping.ViewHolder.ProductViewHolder;
 import com.squareup.picasso.Picasso;
 
@@ -111,13 +115,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     tvUsername.setText(name);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-
     }
 
     @Override
@@ -128,8 +130,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull final Products model) {
                 holder.tvName.setText(model.getPname());
-                holder.tvPrice.setText(model.getPrice());
-                holder.tvDescription.setText(model.getDescription());
+                holder.tvPrice.setText("₹ "+model.getPrice());
 
                 Picasso.get().load(model.getImage_url()).into(holder.ivImage);
 

@@ -1,4 +1,4 @@
-package com.saahil.ssshopping;
+package com.saahil.ssshopping.UserData;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,13 +19,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.saahil.ssshopping.R;
 
 import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
-    EditText etUsername, etContact, etPassword;
+    EditText etUsername, etContact, etPassword, etRePassword;
     Button btnRegister;
     ProgressDialog progressDialog;
+    String name, password, rePassword, contact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,40 +39,55 @@ public class RegisterActivity extends AppCompatActivity {
         etUsername=findViewById(R.id.etUsername);
         etContact=findViewById(R.id.etContact);
         etPassword=findViewById(R.id.etPassword);
+        etRePassword=findViewById(R.id.etRePassword);
         btnRegister=findViewById(R.id.btnRegister);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createAccount();
+                checkValidations();
             }
         });
     }
 
-    private void createAccount() {
-        String name=etUsername.getText().toString().trim();
-        String contact=etContact.getText().toString().trim();
-        String password=etPassword.getText().toString().trim();
+    private void checkValidations() {
+        name=etUsername.getText().toString().trim();
+        contact=etContact.getText().toString().trim();
+        password=etPassword.getText().toString().trim();
+        rePassword=etRePassword.getText().toString().trim();
 
         if(TextUtils.isEmpty(name)){
             etUsername.setError("Required Field!");
+            return;
         }
-        else if(TextUtils.isEmpty(contact)){
+        if(TextUtils.isEmpty(contact)){
             etContact.setError("Required Field!");
+            return;
         }
-        else if(TextUtils.isEmpty(password)){
+        if(TextUtils.isEmpty(password)){
             etPassword.setError("Required Field!");
+            return;
         }
-        else{
-            progressDialog.setTitle("Creating Account");
-            progressDialog.setMessage("Processing...");
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.show();
-            validatePhoneNumber(name, contact, password);
+        if(TextUtils.isEmpty(rePassword)){
+            etRePassword.setError("Required Field!");
+            return;
         }
+        if(!password.equals(rePassword)){
+            etPassword.setError("Passwords don't match!");
+            etRePassword.setError("Passwords don't match!");
+            return;
+        }
+
+        progressDialog.setTitle("Creating Account");
+        progressDialog.setMessage("Processing...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+
+        validatePhoneNumber();
     }
 
-    private void validatePhoneNumber(final String name, final String contact, final String password) {
+    private void validatePhoneNumber() {
         final DatabaseReference databaseReference;
+
         databaseReference= FirebaseDatabase.getInstance().getReference();
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -100,7 +117,7 @@ public class RegisterActivity extends AppCompatActivity {
                 else{
                     Toast.makeText(RegisterActivity.this, "This "+contact+" already exits. Please login!!", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
-                    Intent intent=new Intent(RegisterActivity.this, MainActivity.class);
+                    Intent intent=new Intent(RegisterActivity.this, LoginActivity.class);
                     startActivity(intent);
                 }
             }

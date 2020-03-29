@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.saahil.ssshopping.HomeActivity;
-import com.saahil.ssshopping.MainActivity;
+import com.saahil.ssshopping.UserData.MainActivity;
 import com.saahil.ssshopping.R;
 
 import io.paperdb.Paper;

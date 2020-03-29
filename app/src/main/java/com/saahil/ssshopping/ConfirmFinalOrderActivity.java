@@ -15,12 +15,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.saahil.ssshopping.Prevalent.Prevalent;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class ConfirmfinalOrderActivity extends AppCompatActivity {
+public class ConfirmFinalOrderActivity extends AppCompatActivity {
     EditText etName, etContact, etAddress, etCity;
     Button btnConfirm;
     String totalPrice="";
@@ -28,7 +29,7 @@ public class ConfirmfinalOrderActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_confirmfinal_order);
+        setContentView(R.layout.activity_confirm_final_order);
 
         totalPrice=getIntent().getStringExtra("Total Price");
         Toast.makeText(this, "Total Price= "+totalPrice, Toast.LENGTH_SHORT).show();
@@ -49,21 +50,22 @@ public class ConfirmfinalOrderActivity extends AppCompatActivity {
 
     private void checkValidations() {
         if(TextUtils.isEmpty(etName.getText().toString().trim())){
-            etName.setError("Required Fields!!!");
+            etName.setError("Required Field!");
             return;
         }
         if(TextUtils.isEmpty(etContact.getText().toString().trim())){
-            etContact.setError("Required Fields!!!");
+            etContact.setError("Required Field!");
             return;
         }
         if(TextUtils.isEmpty(etAddress.getText().toString().trim())){
-            etAddress.setError("Required Fields!!!");
+            etAddress.setError("Required Field!");
             return;
         }
         if(TextUtils.isEmpty(etCity.getText().toString().trim())){
-            etCity.setError("Required Fields!!!");
+            etCity.setError("Required Field!");
             return;
         }
+
         confirmOrder();
     }
 
@@ -103,8 +105,8 @@ public class ConfirmfinalOrderActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
-                                        Toast.makeText(ConfirmfinalOrderActivity.this, "Your order has been taken.", Toast.LENGTH_SHORT).show();
-                                        Intent intent=new Intent(ConfirmfinalOrderActivity.this, HomeActivity.class);
+                                        Toast.makeText(ConfirmFinalOrderActivity.this, "Your order has been taken.", Toast.LENGTH_SHORT).show();
+                                        Intent intent=new Intent(ConfirmFinalOrderActivity.this, HomeActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                         finish();

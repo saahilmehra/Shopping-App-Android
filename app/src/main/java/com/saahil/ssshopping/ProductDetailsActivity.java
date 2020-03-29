@@ -14,13 +14,13 @@ import android.widget.Toast;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.saahil.ssshopping.Model.Products;
+import com.saahil.ssshopping.Prevalent.Prevalent;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -140,12 +140,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     product=dataSnapshot.getValue(Products.class);
                     tvName.setText(product.getPname());
                     tvDescription.setText(product.getDescription());
-                    tvPrice.setText(product.getPrice());
+                    tvPrice.setText("₹ "+product.getPrice());
 
                     Picasso.get().load(product.getImage_url()).into(ivProductImage);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 

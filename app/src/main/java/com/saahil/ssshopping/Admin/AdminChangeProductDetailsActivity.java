@@ -29,6 +29,7 @@ public class AdminChangeProductDetailsActivity extends AppCompatActivity {
     ImageView ivImage;
     String productId="";
     DatabaseReference productsReference;
+    String name, price, description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +76,9 @@ public class AdminChangeProductDetailsActivity extends AppCompatActivity {
     }
 
     private void checkValidations() {
-        String name=etName.getText().toString().trim();
-        String price=etPrice.getText().toString().trim();
-        String description=etDescription.getText().toString().trim();
+        name=etName.getText().toString().trim();
+        price=etPrice.getText().toString().trim();
+        description=etDescription.getText().toString().trim();
 
         if(name.equals("")){
             etName.setError("Required Fields...");
@@ -95,10 +96,6 @@ public class AdminChangeProductDetailsActivity extends AppCompatActivity {
     }
 
     private void applyChanges() {
-        String name=etName.getText().toString().trim();
-        String price=etPrice.getText().toString().trim();
-        String description=etDescription.getText().toString().trim();
-
         HashMap<String, Object> productMap=new HashMap<>();
         productMap.put("pname", name);
         productMap.put("price", price);

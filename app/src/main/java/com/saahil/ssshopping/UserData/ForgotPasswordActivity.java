@@ -1,4 +1,4 @@
-package com.saahil.ssshopping;
+package com.saahil.ssshopping.UserData;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -7,6 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +23,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.saahil.ssshopping.HomeActivity;
+import com.saahil.ssshopping.Prevalent.Prevalent;
+import com.saahil.ssshopping.R;
+
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 
@@ -28,6 +36,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     EditText etContact, etQues1, etQues2;
     Button btnVerify;
     String check="";
+    DatabaseReference userReference;
+    LayoutInflater layoutInflater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +45,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forgot_password);
 
         check=getIntent().getStringExtra("check");
+
+        layoutInflater=this.getLayoutInflater();
 
         tvPageTitle=findViewById(R.id.tvPageTitle);
         etContact=findViewById(R.id.etContact);
@@ -51,6 +63,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         etContact.setVisibility(View.GONE);
 
         if(check.equals("settings")){
+            userReference= FirebaseDatabase.getInstance().getReference()
+                    .child("Users")
+                    .child(Prevalent.currentOnlineUser.getContact());
             displayPresentData();
 
             tvPageTitle.setText("Security Questions");
@@ -80,8 +95,16 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         final String answer1=etQues1.getText().toString().trim();
         final String answer2=etQues2.getText().toString().trim();
 
-        if(contact.equals("")){
+        if(TextUtils.isEmpty(contact)){
             etContact.setError("Required field!");
+            return;
+        }
+        if(TextUtils.isEmpty(answer1)){
+            etQues1.setError("Required field!");
+            return;
+        }
+        if(TextUtils.isEmpty(answer2)){
+            etQues2.setError("Required field!");
             return;
         }
 
@@ -90,45 +113,68 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    String mCotact=dataSnapshot.child("contact").getValue().toString();
                     if(dataSnapshot.hasChild("Security Questions")){
                         String ans1=dataSnapshot.child("Security Questions").child("answer1").getValue().toString();
                         String ans2=dataSnapshot.child("Security Questions").child("answer2").getValue().toString();
 
                         if(answer1.equals(ans1) && answer2.equals(ans2)){
                             AlertDialog.Builder builder=new AlertDialog.Builder(ForgotPasswordActivity.this);
+
+                            View view=layoutInflater.inflate(R.layout.password_reset_custom_view, null);
+                            builder.setView(view);
                             builder.setTitle("Enter new password");
-                            final EditText etPassword=new EditText(ForgotPasswordActivity.this);
-                            etPassword.setHint("Password");
-                            builder.setView(etPassword);
+
+                            final EditText etPassword=view.findViewById(R.id.etPassword);
+                            final EditText etRePassword=view.findViewById(R.id.etRePassword);
 
                             builder.setPositiveButton("Change", new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialogInterface, final int i) {
-                                    if(!etPassword.getText().toString().trim().equals("")){
-                                        ref.child("password")
-                                                .setValue(etPassword.getText().toString().trim())
-                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        if(task.isSuccessful()){
-                                                            Toast.makeText(ForgotPasswordActivity.this, "Password Changed Successfully", Toast.LENGTH_SHORT).show();
-                                                            Intent intent=new Intent(ForgotPasswordActivity.this, LoginActivity.class);
-                                                            startActivity(intent);
-                                                        }
-                                                    }
-                                                });
-                                    }
-                                }
-                            });
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    String pass=etPassword.getText().toString().trim();
+                                    String pass2=etRePassword.getText().toString().trim();
 
-                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    if(TextUtils.isEmpty(pass)){
+                                        etPassword.setError("Required Field!");
+                                        Toast.makeText(ForgotPasswordActivity.this, "Password cannnot be left blank!", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                    if(TextUtils.isEmpty(pass2)){
+                                        etRePassword.setError("Required Field!");
+                                        Toast.makeText(ForgotPasswordActivity.this, "Password cannnot be left blank!", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                    if(!pass.equals(pass2)){
+                                        etPassword.setError("Passwords don't match!");
+                                        etRePassword.setError("Passwords don't match!");
+                                        Toast.makeText(ForgotPasswordActivity.this, "Password don't match!", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+
+                                    ref.child("password")
+                                            .setValue(pass)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if(task.isSuccessful()){
+                                                        Toast.makeText(ForgotPasswordActivity.this, "Password Changed Successfully", Toast.LENGTH_SHORT).show();
+                                                        Intent intent=new Intent(ForgotPasswordActivity.this, LoginActivity.class);
+                                                        startActivity(intent);
+                                                        finish();
+                                                    }
+                                                }
+                                            });
+
+
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.cancel();
                                 }
                             });
 
+                            builder.create();
                             builder.show();
                         }
                         else{
@@ -155,23 +201,20 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         String ans1=etQues1.getText().toString().trim();
         String ans2=etQues2.getText().toString().trim();
 
-        if(ans1.equals("")){
+        if(TextUtils.isEmpty(ans1)){
             etQues1.setError("Required Field!");
             return;
         }
-        if(ans2.equals("")){
+        if(TextUtils.isEmpty(ans2)){
             etQues2.setError("Required Field!");
             return;
         }
 
-        DatabaseReference quesReference=FirebaseDatabase.getInstance().getReference()
-                .child("Users")
-                .child(Prevalent.currentOnlineUser.getContact());
         HashMap<String, Object> quesMap=new HashMap<>();
         quesMap.put("answer1", ans1);
         quesMap.put("answer2", ans2);
 
-        quesReference.child("Security Questions").updateChildren(quesMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+        userReference.child("Security Questions").updateChildren(quesMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
@@ -184,9 +227,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
     private void displayPresentData() {
-        DatabaseReference userReference= FirebaseDatabase.getInstance().getReference()
-                .child("Users")
-                .child(Prevalent.currentOnlineUser.getContact());
         userReference.child("Security Questions").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

@@ -1,4 +1,4 @@
-package com.saahil.ssshopping;
+package com.saahil.ssshopping.Prevalent;
 
 import com.saahil.ssshopping.Model.Users;
 

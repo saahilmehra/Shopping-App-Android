@@ -62,8 +62,7 @@ public class SearchProductsActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull final Products model) {
                 holder.tvName.setText(model.getPname());
-                holder.tvPrice.setText(model.getPrice());
-                holder.tvDescription.setText(model.getDescription());
+                holder.tvPrice.setText("₹ "+model.getPrice());
 
                 Picasso.get().load(model.getImage_url()).into(holder.ivImage);
 
